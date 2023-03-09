@@ -1,0 +1,23 @@
+{
+	"name": "@k8pai/tailwind-inputs",
+	"version": "1.0.1",
+	"description": "An Awesome Collection of Form Field components.",
+	"main": "dist/index.js",
+	"module": "src/Input.js",
+	"scripts": {
+		"build": "babel src --out-dir dist --copy-files",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "k8pai",
+	"license": "MIT",
+	"devDependencies": {
+		"@babel/cli": "^7.16.7",
+		"@babel/core": "^7.16.7",
+		"@babel/preset-env": "^7.16.8",
+		"@babel/preset-react": "^7.16.7"
+	},
+	"peerDependencies": {
+		"react": "*",
+		"react-dom": "*"
+	}
+}
