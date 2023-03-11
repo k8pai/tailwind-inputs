@@ -17,7 +17,7 @@ const TextInput = ({
 }) => {
 	const checker = validateFields(validate, value);
 
-	console.log(checker);
+	// console.log(checker);
 	return (
 		<div className="mb-4">
 			<label

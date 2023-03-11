@@ -1,11 +1,11 @@
 {
 	"name": "@k8pai/tailwind-inputs",
-	"version": "1.0.1",
+	"version": "1.1.2",
 	"description": "An Awesome Collection of Form Field components.",
-	"main": "dist/index.js",
+	"main": "index.js",
 	"module": "src/Input.js",
 	"scripts": {
-		"build": "babel src --out-dir dist --copy-files",
+		"build": "babel src --out-dir . --copy-files",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"author": "k8pai",
@@ -19,5 +19,8 @@
 	"peerDependencies": {
 		"react": "*",
 		"react-dom": "*"
+	},
+	"dependencies": {
+		"react-icons": "^4.8.0"
 	}
 }
