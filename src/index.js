@@ -1,1 +1,4 @@
-export { default as TextInput } from '../components/TextInput';
+// index.js
+export { TiText } from './components/TiText';
+export { TiPassword } from './components/TiPassword';
+export { TiMail } from './components/TiMail';

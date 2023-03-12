@@ -1,7 +1,12 @@
 const validateFields = (type, value) => {
+	if (typeof type === 'undefined') {
+		return null;
+	}
+
 	if (type === 'default') {
 		return !!value;
 	}
+
 	if (type === 'noSpace') {
 		if (!value) {
 			return !!value;
@@ -17,6 +22,14 @@ const validateFields = (type, value) => {
 		return usernamePattern.test(value);
 	}
 
+	if (type === 'password') {
+		if (!value) {
+			return !!value;
+		}
+		const passwordPattern =
+			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$#]{8,}$/;
+		return passwordPattern.test(value);
+	}
 	if (type === 'email') {
 		if (!value) {
 			return !!value;
@@ -35,8 +48,9 @@ const validateFields = (type, value) => {
 };
 const generatePlaceholder = (type) => {
 	if (type === 'default') {
-		return 'Enter anything.';
+		return `Can't be empty!`;
 	}
+
 	if (type === 'noSpace') {
 		return 'No space accepted.';
 	}
@@ -46,7 +60,7 @@ const generatePlaceholder = (type) => {
 	}
 
 	if (type === 'email') {
-		return 'Enter an email.';
+		return 'username@gmail.com';
 	}
 
 	if (type === 'discordId') {

@@ -1,6 +1,6 @@
 {
 	"name": "@k8pai/tailwind-inputs",
-	"version": "1.2.2",
+	"version": "1.2.28",
 	"description": "An Awesome Collection of Form Field components.",
 	"main": "index.js",
 	"module": "src/Input.js",
