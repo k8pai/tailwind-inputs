@@ -3,24 +3,28 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-Object.defineProperty(exports, "TiMail", {
+Object.defineProperty(exports, "Button", {
   enumerable: true,
   get: function get() {
-    return _TiMail.TiMail;
+    return _Form.Button;
+  }
+});
+Object.defineProperty(exports, "Form", {
+  enumerable: true,
+  get: function get() {
+    return _Form.Form;
   }
 });
 Object.defineProperty(exports, "TiPassword", {
   enumerable: true,
   get: function get() {
-    return _TiPassword.TiPassword;
+    return _Form.TiPassword;
   }
 });
 Object.defineProperty(exports, "TiText", {
   enumerable: true,
   get: function get() {
-    return _TiText.TiText;
+    return _Form.TiText;
   }
 });
-var _TiText = require("./components/TiText");
-var _TiPassword = require("./components/TiPassword");
-var _TiMail = require("./components/TiMail");
+var _Form = require("./components/Form");
