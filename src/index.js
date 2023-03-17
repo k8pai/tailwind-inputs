@@ -1,3 +1,9 @@
 // index.js
 
-export { Form, Button, TiPassword, TiText } from './components/Form';
+export {
+	TiForm,
+	TiButton,
+	TiLabel,
+	TiText,
+	TiPassword,
+} from './components/TiFields';
