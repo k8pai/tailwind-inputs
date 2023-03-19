@@ -1,15 +1,24 @@
-import React, { createContext } from 'react';
+import { createContext } from 'react';
 
-// Context for managing form states
+// Context for managing form state
 export const TiFormContext = createContext({
 	values: {},
 	setValues: () => {},
 	submit: false,
 	setSubmit: () => {},
+	valid: [],
+	setValid: () => {},
 });
 
 export const TiSelectContext = createContext({
 	selected: '',
+	setSelected: () => {},
+	isOpen: false,
+	setIsOpen: () => {},
+});
+
+export const TiMultiselectContext = createContext({
+	selected: [],
 	setSelected: () => {},
 	isOpen: false,
 	setIsOpen: () => {},

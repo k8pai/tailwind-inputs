@@ -3,9 +3,11 @@ const validateFields = (type, value) => {
 		return null;
 	}
 
-	// if (type === 'default') {
-	// 	return !!value;
-	// }
+	if (type === 'number') {
+		if (value === '') {
+			return null;
+		}
+	}
 
 	if (type === 'noSpace') {
 		if (value === '') {
@@ -24,9 +26,13 @@ const validateFields = (type, value) => {
 			return null;
 		}
 
+		if (value.length <= 8) {
+			return false;
+		}
+
 		const passwordPattern =
 			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$#]{8,}$/;
-		return passwordPattern.test(value);
+		return passwordPattern.test(value) ? true : null;
 	}
 
 	if (type === 'username') {
@@ -45,9 +51,7 @@ const validateFields = (type, value) => {
 		if (value === '') {
 			return null;
 		}
-		// if (value.includes(' ') || value.includes('"') || value.includes('(') || value.includes(')') || value.includes(',') || value.includes(':') || ) {
-		// 	return false;
-		// }
+
 		// Check for not allowed characters
 		const notAllowedChars = /[ "(),:;<>\[\]\\]/g;
 		if (notAllowedChars.test(value)) {
@@ -56,7 +60,7 @@ const validateFields = (type, value) => {
 
 		// Check for dots at the beginning or end of the local part
 		const dotsAtBeginningOrEnd = /^\.|\.$/;
-		if (dotsAtBeginningOrEnd.test(value.split('@')[0])) {
+		if (dotsAtBeginningOrEnd.test(value?.split('@')[0])) {
 			return false;
 		}
 
@@ -72,12 +76,29 @@ const validateFields = (type, value) => {
 	}
 
 	if (type === 'discordId') {
-		if (!value) {
-			return !!value;
-		}
 		const discordIdPattern = /^[a-zA-Z0-9_]{2,32}#[0-9]{4}$/;
-		return discordIdPattern.test(value);
+		const usernameRegex = /^[a-zA-Z0-9_]{2,32}$/;
+		const discriminatorRegex = /^[0-9]{0,4}$/;
+
+		if (value === '' || value.length <= 2) {
+			return null;
+		}
+
+		if (!value.includes('#') && !usernameRegex.test(value)) {
+			return false;
+		}
+
+		if (value.includes('#')) {
+			const [username, discriminator] = value.split('#');
+
+			if (!discriminatorRegex.test(discriminator)) {
+				return false;
+			}
+		}
+
+		return discordIdPattern.test(value) ? true : null;
 	}
+	return value.length > 0 ? true : null;
 };
 const generatePlaceholder = (type) => {
 	if (type === 'default') {
