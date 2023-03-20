@@ -1,23 +1,41 @@
 import { IconContext } from 'react-icons';
 import { HiCheck, HiChevronUpDown } from 'react-icons/hi2';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { TiFormContext, TiSelectContext } from '../lib/Context';
 
 const TiSelect = ({ name, value, children }) => {
 	const { setValues } = useContext(TiFormContext);
 	const [isOpen, setIsOpen] = useState(false);
 	const [selected, setSelected] = useState(value || '');
+	const componentRef = useRef(null);
 
 	useEffect(() => {
 		setValues((el) => ({ ...el, [name]: selected }));
 	}, [selected]);
+
+	useEffect(() => {
+		const handleClickOutside = (event) => {
+			if (
+				componentRef.current &&
+				!componentRef.current.contains(event.target)
+			) {
+				setIsOpen(false);
+			}
+		};
+
+		document.addEventListener('click', handleClickOutside);
+
+		return () => {
+			document.removeEventListener('click', handleClickOutside);
+		};
+	}, [componentRef]);
 
 	const toggleOptions = () => {
 		setIsOpen(!isOpen);
 	};
 
 	return (
-		<div className="relative mb-4 max-w-xs w-full">
+		<div className="relative mb-4 max-w-xs w-full" ref={componentRef}>
 			<div
 				aria-hidden={isOpen}
 				className="appearance-none border-2 border-gray-400 rounded-lg py-3 pl-4 pr-10 leading-tight transition focus:outline-none aria-hidden:shadow-outline aria-hidden:border-gray-700"

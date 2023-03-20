@@ -10,6 +10,11 @@ export const TiFormContext = createContext({
 	setValid: () => {},
 });
 
+export const TiCheckboxContext = createContext({
+	checked: [],
+	setChecked: () => {},
+});
+
 export const TiSelectContext = createContext({
 	selected: '',
 	setSelected: () => {},

@@ -7,7 +7,7 @@ import { TiFormContext, TiMultiselectContext } from '../lib/Context';
 const TiMultiselect = ({ name, value, children }) => {
 	const { setValues } = useContext(TiFormContext);
 	const [isOpen, setIsOpen] = useState(false);
-	const [selected, setSelected] = useState([]);
+	const [selected, setSelected] = useState(value ? [value] : []);
 	const componentRef = useRef(null);
 
 	useEffect(() => {
@@ -55,7 +55,7 @@ const TiMultiselect = ({ name, value, children }) => {
 								}
 							>
 								<span className="font-semibold h-full tracking-wide whitespace-nowrap">
-									{el || 'Select'}
+									{el}
 								</span>
 								<button
 									onClick={(event) => {

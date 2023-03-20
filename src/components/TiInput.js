@@ -356,10 +356,46 @@ const TiNumber = ({
 	);
 };
 
+const TiTextArea = ({ name, customize, autoComplete = 'off', ...rest }) => {
+	const { values, setValues } = useContext(TiFormContext);
+	const { value, setValue } = useContext(TiInputContext);
+	const { generateCustomStyles } = classGenerators;
+
+	const [className, setClassName] = useState(
+		'rounded-lg bg-transparent selection:select-none scrollbar transition duration-75 py-3 px-4 w-full min-h-60 font-semibold tracking-wider text-lg leading-tight border-2 outline-none focus:shadow-outline',
+	);
+
+	useEffect(() => {
+		setValues({ ...values, [name]: value });
+	}, [value]);
+
+	useEffect(() => {
+		if (customize) {
+			setClassName(generateCustomStyles(customize));
+		}
+	}, [customize]);
+
+	return (
+		<div className={`relative min-h-60`}>
+			<textarea
+				id={name}
+				name={name}
+				value={value || ''}
+				rows={5}
+				autoComplete={autoComplete}
+				onChange={(e) => setValue(e.target.value)}
+				className={className}
+				{...rest}
+			/>
+		</div>
+	);
+};
+
 TiInput.Label = TiLabel;
 TiInput.Error = TiError;
 TiInput.Text = TiText;
 TiInput.Mail = TiMail;
 TiInput.Number = TiNumber;
+TiInput.TextArea = TiTextArea;
 
 export default TiInput;
