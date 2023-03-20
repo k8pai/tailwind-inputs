@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { TiFormContext } from '../lib/Context';
 
-const TiRadio = ({ options, name }) => {
+export const TiRadio = ({ options, name }) => {
 	const { setValues } = useContext(TiFormContext);
 	const [selectedOption, setSelectedOption] = useState(options[0]);
 
@@ -43,5 +43,3 @@ const TiRadio = ({ options, name }) => {
 		</div>
 	);
 };
-
-export default TiRadio;

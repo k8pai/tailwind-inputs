@@ -1,7 +1,15 @@
 import React, { useContext, useState } from 'react';
 import { TiFormContext } from '../lib/Context';
 
-const TiRange = ({ name, min, max, step, defaultValue, onChange, ...rest }) => {
+export const TiRange = ({
+	name,
+	min,
+	max,
+	step,
+	defaultValue,
+	onChange,
+	...rest
+}) => {
 	const { setValues } = useContext(TiFormContext);
 	const [value, setValue] = useState(defaultValue ?? (min + max) / 2);
 
@@ -29,5 +37,3 @@ const TiRange = ({ name, min, max, step, defaultValue, onChange, ...rest }) => {
 		/>
 	);
 };
-
-export default TiRange;
