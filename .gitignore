@@ -8,6 +8,10 @@
 node_modules
 dist
 ignore
+components
+lib
+index.js
+
 
 # Book build output
 _book
