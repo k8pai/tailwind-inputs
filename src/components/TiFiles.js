@@ -1,82 +1,84 @@
-import React, { Fragment, useContext, useState } from 'react';
-import { TiFormContext } from '../lib/Context';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
+import { TiFileContext, TiFormContext } from '../lib/Context';
 
-const TiFiles = ({ children, className }) => {
-	const [values, setValues] = useState('');
+const TiFiles = ({ name, children, className }) => {
+	const { setValues } = useContext(TiFormContext);
+	const [file, setFile] = useState(null);
+
+	useEffect(() => {
+		if (setValues) {
+			setValues((prev) => ({ ...prev, [name]: file }));
+		}
+	}, [file]);
 
 	return (
 		<div className={className}>
-			<div className="mt-1 flex items-center border-2 border-indigo-600 rounded-lg">
-				<TiFormContext.Provider
-					value={{
-						values,
-						setValues,
-					}}
-				>
-					{children}
-				</TiFormContext.Provider>
-			</div>
+			<TiFileContext.Provider
+				value={{
+					name,
+					file,
+					setFile,
+				}}
+			>
+				{children}
+			</TiFileContext.Provider>
 		</div>
 	);
 };
 
-// const TiLabel = ({ name, title, ...rest }) => {
-// 	return (
-// 		<label
-// 			htmlFor={name}
-// 			className={`block text-lg ml-1 font-semibold mb-2`}
-// 			{...rest}
-// 		>
-// 			{title}
-// 		</label>
-// 	);
-// };
-
-const TiFile = ({ name }) => {
-	const { values, setValues } = useContext(TiFormContext);
-	const handleFileChange = (event) => {
-		const files = event.target.files;
-		const filesArray = Array.from(files);
-		console.log(files, filesArray);
-		setValues({ ...values, [name]: filesArray });
-	};
+const TiLabel = ({ name, title, ...rest }) => {
 	return (
-		<label
-			htmlFor={`${name}-button`}
-			className="cursor-pointer bg-white m-2 p-2 py-1 shadow rounded-md border border-indigo-600 font-medium text-indigo-600 hover:text-indigo-500 "
-		>
-			<span className="h-full w-full">Choose a file</span>
+		<label htmlFor={name} {...rest}>
+			{title}
+		</label>
+	);
+};
+
+const TiFile = ({
+	label = 'Choose a File',
+	className,
+	statestyle = 'sr-only',
+	...rest
+}) => {
+	const { name, setFile } = useContext(TiFileContext);
+
+	const handleFileChange = (event) => {
+		const files = event.target.files[0];
+		setFile(files);
+	};
+
+	return (
+		<label htmlFor={`${name}-button`} className={className}>
+			<span className="h-full w-full whitespace-nowrap">{label}</span>
 			<input
 				id={`${name}-button`}
 				name={`${name}-button`}
 				type="file"
-				className="sr-only"
+				className={statestyle}
 				onChange={handleFileChange}
+				{...rest}
 			/>
 		</label>
 	);
 };
 
-const TiInfo = ({ name }) => {
-	const { values } = useContext(TiFormContext);
+const TiInfo = ({ fallback = 'No file selected' }) => {
+	const { file } = useContext(TiFileContext);
+
 	return (
-		<div className="ml-3 mr-5">
-			{values[name] && values[name].length > 0 ? (
-				<Fragment>
-					{values[name].map((file, index) => (
-						<p key={index} className="text-sm text-gray-500">
-							{file.name} | ({file.size} bytes)
-						</p>
-					))}
-				</Fragment>
+		<Fragment>
+			{file ? (
+				<p className="text-sm text-gray-500">
+					{file.name} | ({file.size} bytes)
+				</p>
 			) : (
-				<p className="text-sm text-gray-500">No file selected</p>
+				<p className="text-sm text-gray-500">{fallback}</p>
 			)}
-		</div>
+		</Fragment>
 	);
 };
 
-// TiFiles.Label = TiLabel;
+TiFiles.Label = TiLabel;
 TiFiles.File = TiFile;
 TiFiles.Info = TiInfo;
 

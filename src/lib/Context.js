@@ -35,3 +35,9 @@ export const TiInputContext = createContext({
 	valid: null,
 	setValid: () => {},
 });
+
+export const TiFileContext = createContext({
+	name: '',
+	file: '',
+	setFile: () => {},
+});
