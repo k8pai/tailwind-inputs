@@ -1,39 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { TiCheckboxContext, TiFormContext } from '../lib/Context';
 
-const TiCheckbox = ({ name, children, ...rest }) => {
-	const [checked, setChecked] = useState([]);
-
-	const { setValues } = useContext(TiFormContext);
-
-	useEffect(() => {
-		return () =>
-			setValues == '()=>{}'
-				? console.warn(
-						`You need to enclose <TiCheckbox {...props} /> within <TiForm>, to access values of ${name} in your TiForm's submitHandler function.`,
-				  )
-				: null;
-	}, []);
-
-	useEffect(() => {
-		if (setValues) {
-			setValues((el) => ({ ...el, [name]: checked }));
-		}
-	}, [checked]);
-	return (
-		<div className="flex items-center" {...rest}>
-			<TiCheckboxContext.Provider
-				value={{
-					checked,
-					setChecked,
-				}}
-			>
-				{children}
-			</TiCheckboxContext.Provider>
-		</div>
-	);
-};
-
 const TiCheckboxOption = ({ name, value, defaultState }) => {
 	const { setChecked } = useContext(TiCheckboxContext);
 	const [isChecked, setIsChecked] = useState(defaultState ?? false);
@@ -83,4 +50,35 @@ const TiLabel = ({ name, title, ...rest }) => {
 TiCheckbox.option = TiCheckboxOption;
 TiCheckbox.Label = TiLabel;
 
-export default TiCheckbox;
+export default function TiCheckbox({ name, children, ...rest }) {
+	const [checked, setChecked] = useState([]);
+
+	const { setValues } = useContext(TiFormContext);
+
+	useEffect(() => {
+		return () =>
+			setValues == '()=>{}'
+				? console.warn(
+						`You need to enclose <TiCheckbox {...props} /> within <TiForm>, to access values of ${name} in your TiForm's submitHandler function.`,
+				  )
+				: null;
+	}, []);
+
+	useEffect(() => {
+		if (setValues) {
+			setValues((el) => ({ ...el, [name]: checked }));
+		}
+	}, [checked]);
+	return (
+		<div className="flex items-center" {...rest}>
+			<TiCheckboxContext.Provider
+				value={{
+					checked,
+					setChecked,
+				}}
+			>
+				{children}
+			</TiCheckboxContext.Provider>
+		</div>
+	);
+}

@@ -6,7 +6,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { HiChevronDown, HiChevronUp } from 'react-icons/hi2';
 import { TiFormContext, TiInputContext } from '../lib/Context';
 
-const TiLabel = ({ name, title, ...restProps }) => {
+const TiLabel = ({ title, ...restProps }) => {
+	const { name } = useContext(TiInputContext);
 	return (
 		<label htmlFor={name} {...restProps}>
 			{title}
@@ -14,42 +15,21 @@ const TiLabel = ({ name, title, ...restProps }) => {
 	);
 };
 
-const TiInput = ({ children, ...rest }) => {
-	const [valid, setValid] = useState(null);
-	const [inpValue, setInpValue] = useState('');
-
-	return (
-		<div {...rest}>
-			<TiInputContext.Provider
-				value={{
-					value: inpValue,
-					setValue: setInpValue,
-					valid,
-					setValid,
-				}}
-			>
-				{children}
-			</TiInputContext.Provider>
-		</div>
-	);
-};
-
-const TiError = ({ errorMessage = false, children, ...rest }) => {
+const TiError = ({ message = '', children, ...rest }) => {
 	const { valid } = useContext(TiInputContext);
 
 	return (
 		<h1
-			aria-hidden={errorMessage && valid === false}
+			aria-hidden={message && valid === false}
 			className="text-red-500 mt-px ml-1 font-semibold tracking-wide transition-all ease-in-out duration-300 opacity-0 invisible aria-hidden:visible aria-hidden:opacity-100"
 			{...rest}
 		>
-			{children}
+			{message}
 		</h1>
 	);
 };
 
 const TiText = ({
-	name,
 	validate,
 	customize,
 	loader = false,
@@ -60,7 +40,8 @@ const TiText = ({
 }) => {
 	const { validateFields } = helpers;
 	const { values, setValues, submit } = useContext(TiFormContext);
-	const { value, setValue, valid, setValid } = useContext(TiInputContext);
+	const { name, value, setValue, valid, setValid } =
+		useContext(TiInputContext);
 	const { generateCustomStyles } = classGenerators;
 
 	const [animate, setAnimate] = useState(false);
@@ -147,7 +128,6 @@ const TiText = ({
 };
 
 const TiMail = ({
-	name,
 	validate = 'email',
 	customize,
 	loader = false,
@@ -157,7 +137,8 @@ const TiMail = ({
 }) => {
 	const { validateFields } = helpers;
 	const { values, setValues, submit } = useContext(TiFormContext);
-	const { value, setValue, valid, setValid } = useContext(TiInputContext);
+	const { name, value, setValue, valid, setValid } =
+		useContext(TiInputContext);
 	const { generateCustomStyles } = classGenerators;
 
 	const [animate, setAnimate] = useState(false);
@@ -244,7 +225,6 @@ const TiMail = ({
 };
 
 const TiNumber = ({
-	name,
 	validate = 'number',
 	customize,
 	autoComplete = 'off',
@@ -254,7 +234,8 @@ const TiNumber = ({
 }) => {
 	const { validateFields } = helpers;
 	const { values, setValues, submit } = useContext(TiFormContext);
-	const { value, setValue, valid, setValid } = useContext(TiInputContext);
+	const { name, value, setValue, valid, setValid } =
+		useContext(TiInputContext);
 	const { generateCustomStyles } = classGenerators;
 
 	const [className, setClassName] = useState(
@@ -280,7 +261,6 @@ const TiNumber = ({
 	}, [submit]);
 
 	useEffect(() => {
-		console.log(typeof value, value);
 		setValid(validateFields(validate, value));
 		if (value < min || value.length === 0) setValid(null);
 		if (value > max) setValid(false);
@@ -376,18 +356,16 @@ const TiTextArea = ({ name, customize, autoComplete = 'off', ...rest }) => {
 	}, [customize]);
 
 	return (
-		<div className={`relative min-h-60`}>
-			<textarea
-				id={name}
-				name={name}
-				value={value || ''}
-				rows={5}
-				autoComplete={autoComplete}
-				onChange={(e) => setValue(e.target.value)}
-				className={className}
-				{...rest}
-			/>
-		</div>
+		<textarea
+			id={name}
+			name={name}
+			value={value || ''}
+			rows={5}
+			autoComplete={autoComplete}
+			onChange={(e) => setValue(e.target.value)}
+			className={className}
+			{...rest}
+		/>
 	);
 };
 
@@ -398,4 +376,23 @@ TiInput.Mail = TiMail;
 TiInput.Number = TiNumber;
 TiInput.TextArea = TiTextArea;
 
-export default TiInput;
+export default function TiInput({ name, children, ...rest }) {
+	const [valid, setValid] = useState(null);
+	const [inpValue, setInpValue] = useState('');
+
+	return (
+		<div {...rest}>
+			<TiInputContext.Provider
+				value={{
+					name,
+					value: inpValue,
+					setValue: setInpValue,
+					valid,
+					setValid,
+				}}
+			>
+				{children}
+			</TiInputContext.Provider>
+		</div>
+	);
+}

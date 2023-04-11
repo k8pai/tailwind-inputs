@@ -1,10 +1,57 @@
 import { IconContext } from 'react-icons';
 import { MdOutlineClose } from 'react-icons/md';
 import { HiCheck, HiChevronUpDown } from 'react-icons/hi2';
-import React, { useContext, useEffect, useRef, useState } from 'react';
 import { TiFormContext, TiMultiselectContext } from '../lib/Context';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
-const TiMultiselect = ({ name, value, children }) => {
+const TiMultiselectOptions = ({ value, disable, children }) => {
+	const { selected, setSelected, setIsOpen } =
+		useContext(TiMultiselectContext);
+
+	const handleClick = () => {
+		if (!disable) {
+			setSelected((el) => [...el, value]);
+			setIsOpen((val) => !val);
+		}
+	};
+
+	return (
+		<div
+			className={`relative select-none pr-4 py-2 pl-11 ${
+				selected.find((el) => el === value) ? 'hidden' : 'block'
+			} ${
+				disable ? 'bg-slate-50' : 'hover:bg-gray-100  cursor-pointer'
+			}  transition-all ease-in-out font-semibold`}
+			onClick={handleClick}
+		>
+			<>
+				<span
+					className={`block truncate ${
+						selected === value ? 'font-medium' : 'font-normal'
+					} ${disable ? 'text-gray-300' : null}`}
+				>
+					{children}
+				</span>
+				{selected === value ? (
+					<span className="absolute inset-y-0 left-0 flex items-center mx-3 text-amber-600">
+						<IconContext.Provider
+							value={{
+								size: '1.4em',
+								className: 'global-class-name text-green-500',
+							}}
+						>
+							<HiCheck />
+						</IconContext.Provider>
+					</span>
+				) : null}
+			</>
+		</div>
+	);
+};
+
+TiMultiselect.Option = TiMultiselectOptions;
+
+export default function TiMultiselect({ name, value, children }) {
 	const { setValues } = useContext(TiFormContext);
 	const [isOpen, setIsOpen] = useState(false);
 	const [selected, setSelected] = useState(value ? [value] : []);
@@ -96,53 +143,4 @@ const TiMultiselect = ({ name, value, children }) => {
 			</TiMultiselectContext.Provider>
 		</div>
 	);
-};
-
-const TiMultiselectOptions = ({ value, disable, children }) => {
-	const { selected, setSelected, setIsOpen } =
-		useContext(TiMultiselectContext);
-
-	const handleClick = () => {
-		if (!disable) {
-			setSelected((el) => [...el, value]);
-			setIsOpen((val) => !val);
-		}
-	};
-
-	return (
-		<div
-			className={`relative select-none pr-4 py-2 pl-11 ${
-				selected.find((el) => el === value) ? 'hidden' : 'block'
-			} ${
-				disable ? 'bg-slate-50' : 'hover:bg-gray-100  cursor-pointer'
-			}  transition-all ease-in-out font-semibold`}
-			onClick={handleClick}
-		>
-			<>
-				<span
-					className={`block truncate ${
-						selected === value ? 'font-medium' : 'font-normal'
-					} ${disable ? 'text-gray-300' : null}`}
-				>
-					{children}
-				</span>
-				{selected === value ? (
-					<span className="absolute inset-y-0 left-0 flex items-center mx-3 text-amber-600">
-						<IconContext.Provider
-							value={{
-								size: '1.4em',
-								className: 'global-class-name text-green-500',
-							}}
-						>
-							<HiCheck />
-						</IconContext.Provider>
-					</span>
-				) : null}
-			</>
-		</div>
-	);
-};
-
-TiMultiselect.Option = TiMultiselectOptions;
-
-export default TiMultiselect;
+}

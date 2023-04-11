@@ -67,7 +67,9 @@ const TiSelect = ({ name, value, children }) => {
 	);
 };
 
-const TiSelectOptions = ({ value, disable, children }) => {
+TiSelect.Option = TiSelectOptions;
+
+export default function TiSelectOptions({ value, disable, children }) {
 	const { selected, setSelected, setIsOpen } = useContext(TiSelectContext);
 
 	const handleClick = () => {
@@ -107,8 +109,4 @@ const TiSelectOptions = ({ value, disable, children }) => {
 			</>
 		</div>
 	);
-};
-
-TiSelect.Option = TiSelectOptions;
-
-export default TiSelect;
+}
