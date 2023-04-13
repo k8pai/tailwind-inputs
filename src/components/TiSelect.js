@@ -9,7 +9,7 @@ export default function TiSelect({
 	value,
 	indicator = true,
 	options,
-	onChange,
+	onChange = () => {},
 	style = {
 		mode: 'light',
 	},
