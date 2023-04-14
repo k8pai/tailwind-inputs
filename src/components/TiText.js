@@ -1,52 +1,51 @@
-import { validateFields } from '../lib/helpers';
 import { IconContext } from 'react-icons';
+import { TiFormContext } from '../lib/Context';
+import { validateFields } from '../lib/helpers';
 import { TiTick, TiTimes } from 'react-icons/ti';
 import React, { useContext, useEffect, useState } from 'react';
-import { TiFormContext } from '../lib/Context';
 
-export const TiText = ({
+export default function TiText({
 	name,
-	defaultValue = '',
-	validate,
-	label,
-	mandatory,
-	loader = false,
-	autoComplete = 'off',
-	placeholder = '',
 	error,
-	readOnly,
-	readOnlyText,
+	label,
+	style = {
+		mode: 'light',
+	},
+	loader = false,
 	disabled = false,
-	theme = {
-		label: 'text-black font-semibold tracking-wide mb-2',
-		input: 'font-semibold tracking-wider text-lg rounded-lg bg-transparent selection:select-none',
+	readOnly,
+	validate,
+	mandatory,
+	placeholder = '',
+	readOnlyText,
+	defaultValue = '',
+	autoComplete = 'off',
+	...rest
+}) {
+	const [valid, setValid] = useState(null);
+	const [value, setValue] = useState(defaultValue);
+	const { values, setValues, submit } = useContext(TiFormContext);
+	const [theme, setTheme] = useState({
+		size: 'max-w-sm',
+		color: style.mode === 'dark' ? 'text-white' : 'text-black',
+		bg: style.mode === 'dark' ? 'bg-[#181818]' : 'bg-white',
+		border: 'border-2 border-gray-400',
+		// padding: 'pl-6 py-5 pr-11',
+		disabled:
+			style.mode === 'dark'
+				? 'text-gray-400 bg-[#121212]'
+				: 'text-gray-300 bg-slate-50',
+
+		label: 'font-semibold tracking-wide ml-2',
+		input: 'font-semibold tracking-wider text-lg rounded-lg',
 		default: 'border-gray-500',
 		valid: 'border-green-400',
 		invalid: 'border-red-400',
 		error: 'text-red-500 font-semibold tracking-wide',
-	},
-	...rest
-}) => {
-	const [valid, setValid] = useState(null);
-	const [value, setValue] = useState(defaultValue);
-	const { values, setValues, submit } = useContext(TiFormContext);
+		...style,
+	});
 
 	const [animate, setAnimate] = useState(false);
-
-	useEffect(() => {
-		theme.label = theme.label
-			? theme.label
-			: 'text-black font-semibold tracking-wide mb-2';
-		theme.input = theme.input
-			? theme.input
-			: `font-semibold tracking-wider text-lg rounded-lg bg-transparent selection:select-none`;
-		theme.default = theme.default ? theme.default : 'border-gray-500';
-		theme.valid = theme.valid ? theme.valid : 'border-green-400';
-		theme.invalid = theme.invalid ? theme.invalid : 'border-red-400';
-		theme.error = theme.error
-			? theme.error
-			: 'text-red-500 font-semibold tracking-wide';
-	}, []);
 
 	useEffect(() => {
 		if (typeof validate !== 'undefined' && valid === null) {
@@ -72,7 +71,10 @@ export const TiText = ({
 	return (
 		<div {...rest}>
 			{label && (
-				<label htmlFor={name} className={`${theme.label}`}>
+				<label
+					htmlFor={name}
+					className={`${theme.label} ${theme.color}`}
+				>
 					{label}
 					{mandatory && (
 						<span className="text-red-500 font-extrabold text-lg ml-2">
@@ -81,7 +83,9 @@ export const TiText = ({
 					)}
 				</label>
 			)}
-			<div className={`relative`}>
+			<div
+				className={`relative mt-2 bg-transparent ${theme.size} ${theme.color}`}
+			>
 				<input
 					id={name}
 					name={name}
@@ -91,11 +95,13 @@ export const TiText = ({
 					disabled={disabled}
 					placeholder={placeholder}
 					readOnly={readOnly}
-					className={`${
-						theme.input
-					} transition duration-75 py-3 pl-4 pr-11 w-full leading-tight outline-none focus:shadow-outline ${
+					className={`transition duration-75 w-full leading-tight outline-none focus:shadow-outline ${
+						validate && !theme.padding
+							? 'pl-4 pr-11 py-3 '
+							: theme.padding ?? 'px-4 py-3 '
+					} ${theme.input} ${
 						readOnlyText ? 'border-0' : 'border-2'
-					} ${
+					} ${theme.bg} ${
 						valid === true
 							? `${theme.valid}`
 							: valid === false
@@ -135,11 +141,11 @@ export const TiText = ({
 			{error && (
 				<h1
 					aria-hidden={error && valid === false}
-					className={`${theme.error} mt-px ml-1 transition-all ease-in-out duration-300 opacity-0 invisible aria-hidden:visible aria-hidden:opacity-100`}
+					className={`${theme.error} mt-1 ml-1 transition-all ease-in-out duration-300 opacity-0 invisible aria-hidden:visible aria-hidden:opacity-100`}
 				>
 					{error}
 				</h1>
 			)}
 		</div>
 	);
-};
+}
