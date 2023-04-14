@@ -122,4 +122,33 @@ const generatePlaceholder = (type) => {
 	}
 };
 
-export default { validateFields, generatePlaceholder };
+const cleanupOptions = (options) => {
+	// This is a cleanup function to convert array to objects if these are array of objects, else to return a uniformalized array of objects
+	if (options.every((el) => typeof el === 'object')) {
+		return options.map((el, ind) => {
+			const { id, name, value, disable } = el;
+			if (!id) el.id = ind;
+			if (!name && value) el.name = value;
+			if (!disable) el.disable = false;
+			return el;
+		});
+	} else if (options.every((el) => typeof el === 'string')) {
+		return options.map((el, ind) => {
+			return { id: ind, name: el, value: el, disable: false };
+		});
+	} else if (options.every((el) => typeof el === 'number')) {
+		return options.map((el, ind) => {
+			return { id: ind, name: el, value: el, disable: false };
+		});
+	}
+	return options;
+};
+
+function cleanupChoices(options, selected) {
+	// cleaningup options such that options has no object with value = value
+	return options.filter(
+		(el) => !selected.some((item) => item.value === el.value),
+	);
+}
+
+export { validateFields, generatePlaceholder, cleanupOptions, cleanupChoices };

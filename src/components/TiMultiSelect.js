@@ -3,18 +3,18 @@ import { MdOutlineClose } from 'react-icons/md';
 import { HiCheck, HiChevronUpDown } from 'react-icons/hi2';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { TiFormContext } from '../lib/Context';
-import { cleanupOptions } from '../lib/helpers';
+import { cleanupChoices, cleanupOptions } from '../lib/helpers';
 
 export default function TiMultiSelect({
 	name,
 	label,
 	value,
 	style = {
-		mode: 'light',
+		mode: 'dark',
 	},
 	options,
-	mandatory,
 	onChange = () => {},
+	mandatory,
 	indicator,
 	placeholder = 'Select',
 	...rest
@@ -26,7 +26,7 @@ export default function TiMultiSelect({
 			style.mode === 'dark'
 				? 'text-white text-lg font-semibold'
 				: 'text-black text-lg font-semibold',
-		size: 'max-w-sm',
+		size: 'max-w-xl',
 		indicator: 'text-green-500',
 		color: style.mode === 'dark' ? 'text-white' : 'text-black',
 		bg: style.mode === 'dark' ? 'bg-[#181818]' : 'bg-white',
@@ -50,11 +50,8 @@ export default function TiMultiSelect({
 	const componentRef = useRef(null);
 
 	useEffect(() => {
-		console.log('this is selected = ', choices);
-	}, []);
-
-	useEffect(() => {
 		setValues((el) => ({ ...el, [name]: selected }));
+		setChoices(cleanupChoices(options, selected));
 	}, [selected]);
 
 	useEffect(() => {
@@ -84,7 +81,6 @@ export default function TiMultiSelect({
 				...el,
 				{ name: item.name, value: item.value },
 			]);
-
 			onChange([...selected, { name: item.name, value: item.value }]);
 		}
 	}
@@ -122,7 +118,9 @@ export default function TiMultiSelect({
 										' py-1 px-2 h-full border shadow-lg rounded-md select-none flex items-center'
 									}
 								>
-									<span className="font-semibold h-full tracking-wide whitespace-nowrap">
+									<span
+										className={`font-semibold h-full tracking-wide whitespace-nowrap ${theme.color}`}
+									>
 										{el.value}
 									</span>
 									<button
@@ -144,7 +142,9 @@ export default function TiMultiSelect({
 								</div>
 							))
 						) : (
-							<span className="font-semibold border border-transparent tracking-wide select-none px-4 py-1 h-full">
+							<span
+								className={`font-semibold border border-transparent tracking-wide select-none px-4 py-1 h-full ${theme.color}`}
+							>
 								{placeholder}
 							</span>
 						)}
@@ -156,7 +156,13 @@ export default function TiMultiSelect({
 				</div>
 				<div
 					aria-hidden={!isOpen}
-					className={`absolute top-full left-0 right-0 py-1 z-10 transition-all ease-in-out duration-200 ${theme.bg} border border-gray-400 rounded-md shadow-lg mt-1 overflow-auto max-h-60 opacity-100 visible aria-hidden:invisible aria-hidden:opacity-0`}
+					className={`absolute top-full left-0 right-0 z-10 transition-all ease-in-out duration-200 ${
+						theme.bg
+					} ${
+						choices.length > 0 ? theme.border : 'border-0'
+					} rounded-md shadow-lg mt-1 overflow-auto max-h-60 opacity-100 visible aria-hidden:invisible aria-hidden:opacity-0  ${
+						choices.length > 0 ? 'py-1' : 'py-0'
+					}`}
 				>
 					{choices.map((item, ind) => {
 						return (
@@ -164,12 +170,6 @@ export default function TiMultiSelect({
 								key={ind}
 								className={`relative select-none py-2 transition-all ease-in-out font-semibold ${
 									indicator ? 'pr-4 pl-11' : 'px-4'
-								}  ${
-									selected.find(
-										(el) => el.value === item.value,
-									)
-										? 'hidden'
-										: 'block'
 								} ${theme.color} ${
 									item.disable
 										? `${theme.disabled}`
@@ -178,15 +178,7 @@ export default function TiMultiSelect({
 								onClick={() => handleClick(item)}
 							>
 								<>
-									<span
-										className={`block truncate ${
-											selected.find(
-												(el) => el.value === item.value,
-											)
-												? 'font-medium'
-												: 'font-normal'
-										}`}
-									>
+									<span className={`block truncate`}>
 										{item.name}
 									</span>
 									{selected.some(
