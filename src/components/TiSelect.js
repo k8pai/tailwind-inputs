@@ -36,7 +36,10 @@ export default function TiSelect({
 				: 'aria-hidden:border-gray-700',
 		...style,
 	});
-	const [selected, setSelected] = useState(value || '');
+	const [selected, setSelected] = useState({
+		name: value ?? '',
+		value: value ?? '',
+	});
 	const [choices, setChoices] = useState(cleanupOptions(options));
 	const componentRef = useRef(null);
 
@@ -67,7 +70,7 @@ export default function TiSelect({
 
 	const handleClick = (option) => {
 		if (!option.disable && option.value !== selected) {
-			setSelected(option.value);
+			setSelected({ name: option.name, value: option.value });
 			onChange(option.value);
 		}
 		if (!option.disable) {
@@ -90,7 +93,7 @@ export default function TiSelect({
 				<span
 					className={`font-semibold tracking-wide select-none ${theme.color}`}
 				>
-					{selected || 'Select'}
+					{selected.name || 'Select'}
 				</span>
 				<HiChevronUpDown
 					className={`absolute inset-y-0 right-0 h-full mx-3 ${theme.color}`}
@@ -116,14 +119,15 @@ export default function TiSelect({
 							<>
 								<span
 									className={`block truncate ${
-										selected === option.value
+										selected.value === option.value
 											? 'font-medium'
 											: 'font-normal'
 									}`}
 								>
 									{option.name}
 								</span>
-								{selected === option.value && indicator ? (
+								{selected.value === option.value &&
+								indicator ? (
 									<span
 										className={`absolute inset-y-0 left-0 flex items-center mx-3 ${theme.indicator}`}
 									>
