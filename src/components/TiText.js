@@ -1,10 +1,10 @@
-import helpers from '../lib/helpers';
+import { validateFields } from '../lib/helpers';
 import { IconContext } from 'react-icons';
 import { TiTick, TiTimes } from 'react-icons/ti';
 import React, { useContext, useEffect, useState } from 'react';
 import { TiFormContext } from '../lib/Context';
 
-export default function TiText({
+export const TiText = ({
 	name,
 	defaultValue = '',
 	validate,
@@ -26,9 +26,8 @@ export default function TiText({
 		error: 'text-red-500 font-semibold tracking-wide',
 	},
 	...rest
-}) {
+}) => {
 	const [valid, setValid] = useState(null);
-	const { validateFields } = helpers;
 	const [value, setValue] = useState(defaultValue);
 	const { values, setValues, submit } = useContext(TiFormContext);
 
@@ -143,4 +142,4 @@ export default function TiText({
 			)}
 		</div>
 	);
-}
+};
