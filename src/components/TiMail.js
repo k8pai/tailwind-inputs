@@ -1,41 +1,50 @@
-import React, { useContext, useEffect, useState } from 'react';
 import { IconContext } from 'react-icons';
-import { TiTick, TiTimes } from 'react-icons/ti';
 import { TiFormContext } from '../lib/Context';
-import helpers from '../lib/helpers';
+import { validateFields } from '../lib/helpers';
+import { TiTick, TiTimes } from 'react-icons/ti';
+import React, { useContext, useEffect, useState } from 'react';
 
 export default function TiMail({
 	name,
-	label,
-	validate = 'email',
-	loader = false,
-	autoComplete = 'off',
-	theme,
 	error,
+	label,
+	style = {
+		mode: 'light',
+	},
+	loader = false,
+	disabled = false,
+	validate = 'email',
+	mandatory,
 	className,
+	placeholder = '',
+	defaultValue = '',
+	autoComplete = 'off',
 	...rest
 }) {
-	const { validateFields } = helpers;
 	const { values, setValues, submit } = useContext(TiFormContext);
 
 	const [value, setValue] = useState('');
 	const [valid, setValid] = useState(null);
-	const [animate, setAnimate] = useState(false);
+	const [theme, setTheme] = useState({
+		bg: style.mode === 'dark' ? 'bg-[#181818]' : 'bg-white',
+		size: 'max-w-sm',
+		color: style.mode === 'dark' ? 'text-white' : 'text-black',
+		border: 'border-2 border-gray-400',
+		padding: 'px-4 py-3',
+		disabled:
+			style.mode === 'dark'
+				? 'text-gray-400 bg-[#121212]'
+				: 'text-gray-300 bg-slate-50',
 
-	useEffect(() => {
-		theme.label = theme.label
-			? theme.label
-			: 'text-black font-semibold tracking-wide';
-		theme.input = theme.input
-			? theme.input
-			: 'font-semibold tracking-wider text-lg rounded-lg bg-transparent selection:select-none border-2';
-		theme.default = theme.default ? theme.default : 'border-gray-500';
-		theme.valid = theme.valid ? theme.valid : 'border-green-400';
-		theme.invalid = theme.invalid ? theme.invalid : 'border-red-400';
-		theme.error = theme.error
-			? theme.error
-			: 'text-red-500 font-semibold tracking-wide';
-	}, []);
+		label: 'font-semibold tracking-wide ml-2',
+		input: 'font-semibold tracking-wider text-lg rounded-lg',
+		valid: 'border-green-400',
+		error: 'text-red-500 font-semibold tracking-wide',
+		default: 'border-gray-500',
+		invalid: 'border-red-400',
+		...style,
+	});
+	const [animate, setAnimate] = useState(false);
 
 	useEffect(() => {
 		if (valid === false) {
@@ -65,27 +74,40 @@ export default function TiMail({
 	return (
 		<div className={className}>
 			{label && (
-				<label htmlFor={name} className={`${theme.label}`}>
+				<label
+					htmlFor={name}
+					className={`${theme.label} ${theme.color}`}
+				>
 					{label}
+					{mandatory && (
+						<span className="text-red-500 font-extrabold text-lg ml-2">
+							*
+						</span>
+					)}
 				</label>
 			)}
-			<div className={`relative`}>
+			<div
+				className={`relative mt-2 bg-transparent ${theme.size} ${theme.color}`}
+			>
 				<input
 					id={name}
 					name={name}
 					value={value}
 					autoComplete={autoComplete}
 					onChange={(event) => setValue(event.target.value)}
-					className={`${
-						theme.input
-					} transition duration-75 py-3 pl-4 pr-11 w-full leading-tight outline-none focus:shadow-outline ${
+					disabled={disabled}
+					placeholder={placeholder}
+					className={`transition duration-75 w-full leading-tight outline-none focus:shadow-outline ${
+						validate && !theme.padding
+							? 'pl-4 pr-11 py-3 '
+							: theme.padding
+					} ${theme.input} ${theme.border} ${theme.bg} ${
 						valid === true
 							? `${theme.valid}`
 							: valid === false
 							? `${theme.invalid}`
 							: `${theme.default}`
 					}`}
-					{...rest}
 				/>
 
 				<div className="absolute z-40 inset-y-0 w-11 right-0 flex items-center px-3 rounded-r-lg focus:outline-none space-x-2">
