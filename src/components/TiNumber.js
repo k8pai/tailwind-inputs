@@ -2,39 +2,49 @@ import React, { useContext, useEffect, useState } from 'react';
 import { IconContext } from 'react-icons';
 import { HiChevronDown, HiChevronUp } from 'react-icons/hi2';
 import { TiFormContext } from '../lib/Context';
-import helpers from '../lib/helpers';
+import { validateFields } from '../lib/helpers';
 
-export default function TiNumber({
-	name,
-	label,
-	error,
-	validate = 'number',
-	autoComplete = 'off',
+export default function TiNumberComponents({
 	min = 0,
 	max = 100,
-	theme,
+	name,
+	error,
+	label,
+	style = {
+		mode: 'light',
+	},
+	loader = false,
+	disabled = false,
+	validate = 'number',
+	indicator = !true,
+	mandatory = false,
+	placeholder = '',
+	defaultValue = 0,
+	autoComplete = 'off',
 	...rest
 }) {
-	const { validateFields } = helpers;
 	const { values, setValues, submit } = useContext(TiFormContext);
-	const [value, setValue] = useState(0);
+	const [value, setValue] = useState(defaultValue);
 	const [valid, setValid] = useState(null);
+	const [theme, setTheme] = useState({
+		size: 'max-w-sm',
+		color: style.mode === 'dark' ? 'text-white' : 'text-black',
+		bg: style.mode === 'dark' ? 'bg-[#181818]' : 'bg-white',
+		border: 'border-2 border-gray-400',
+		// padding: 'pl-6 py-5 pr-11',
+		disabled:
+			style.mode === 'dark'
+				? 'text-gray-400 bg-[#121212]'
+				: 'text-gray-300 bg-slate-50',
 
-	useEffect(() => {
-		theme.label = theme.label
-			? theme.label
-			: 'text-black font-semibold tracking-wide';
-		theme.input = theme.input
-			? theme.input
-			: 'font-semibold tracking-wider text-lg rounded-lg bg-transparent selection:select-none border-2';
-		theme.default = theme.default ? theme.default : 'border-gray-500';
-		theme.valid = theme.valid ? theme.valid : 'border-green-400';
-		theme.invalid = theme.invalid ? theme.invalid : 'border-red-400';
-		theme.error = theme.error
-			? theme.error
-			: 'text-red-500 font-semibold tracking-wide';
-		setValue(parseInt(0));
-	}, []);
+		label: 'font-semibold tracking-wide ml-2',
+		input: 'font-semibold tracking-wider text-lg rounded-lg',
+		default: 'border-gray-500',
+		valid: 'border-green-400',
+		invalid: 'border-red-400',
+		error: 'text-red-500 font-semibold tracking-wide',
+		...style,
+	});
 
 	useEffect(() => {
 		if (valid === false) {
@@ -69,62 +79,78 @@ export default function TiNumber({
 	return (
 		<div {...rest}>
 			{label && (
-				<label htmlFor={name} className={`${theme.label}`}>
+				<label
+					htmlFor={name}
+					className={`${theme.label} ${theme.color}`}
+				>
 					{label}
+					{mandatory && (
+						<span className="text-red-500 font-extrabold text-lg ml-2">
+							*
+						</span>
+					)}
 				</label>
 			)}
-			<div className={`group relative`}>
+			<div
+				className={`relative group mt-2 bg-transparent ${theme.size} ${theme.color}`}
+			>
 				<input
 					id={name}
 					name={name}
 					value={value}
 					autoComplete={autoComplete}
 					onChange={handleChange}
-					className={`${
-						theme.input
-					} transition duration-75 py-3 pl-4 pr-11 w-full leading-tight outline-none focus:shadow-outline ${
+					placeholder={placeholder}
+					className={`transition duration-75 w-full leading-tight outline-none focus:shadow-outline ${
+						theme.padding && !indicator
+							? theme.padding
+							: indicator
+							? 'pl-4 pr-11 py-3 '
+							: 'px-4 py-3'
+					} ${theme.input} ${theme.border} ${theme.bg} ${
 						valid === true
 							? `${theme.valid}`
 							: valid === false
 							? `${theme.invalid}`
 							: `${theme.default}`
 					}`}
-					{...rest}
 				/>
-				<div className="absolute z-40 inset-y-0 h-full right-0 flex flex-col justify-center space-y-1 px-3 rounded-r-lg focus:outline-none transition-all duration-200 ease-in-out invisible opacity-0 group-hover:visible group-hover:opacity-100">
-					<button
-						className="border rounded-md py-px px-1"
-						onClick={(event) => {
-							event.preventDefault();
-							setValue((val) => parseInt(val) + 1);
-						}}
-					>
-						<IconContext.Provider
-							value={{
-								size: '.75em',
-								className: 'global-class-name',
+				{indicator && (
+					<div className="absolute z-40 inset-y-0 h-full right-0 flex flex-col justify-center space-y-1 px-3 rounded-r-lg focus:outline-none transition-all duration-200 ease-in-out invisible opacity-0 group-hover:visible group-hover:opacity-100">
+						<button
+							className="border rounded-md py-px px-1"
+							onClick={(event) => {
+								event.preventDefault();
+								setValue((val) => parseInt(val) + 1);
 							}}
 						>
-							<HiChevronUp />
-						</IconContext.Provider>
-					</button>
-					<button
-						className="border rounded-md py-px px-1"
-						onClick={(event) => {
-							event.preventDefault();
-							setValue((val) => parseInt(val) - 1);
-						}}
-					>
-						<IconContext.Provider
-							value={{
-								size: '.75em',
-								className: 'global-class-name',
+							<IconContext.Provider
+								value={{
+									size: '.75em',
+									className: 'global-class-name',
+								}}
+							>
+								<HiChevronUp />
+							</IconContext.Provider>
+						</button>
+						<button
+							className="border rounded-md py-px px-1"
+							onClick={(event) => {
+								event.preventDefault();
+								setValue((val) => parseInt(val) - 1);
 							}}
 						>
-							<HiChevronDown />
-						</IconContext.Provider>
-					</button>
-				</div>
+							<IconContext.Provider
+								value={{
+									size: '.75em',
+									className: 'global-class-name',
+								}}
+							>
+								<HiChevronDown />
+							</IconContext.Provider>
+						</button>
+					</div>
+				)}
 			</div>
 
 			{error && (
