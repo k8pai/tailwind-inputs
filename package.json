@@ -1,6 +1,6 @@
 {
 	"name": "@k8pai/tailwind-inputs",
-	"version": "1.2.49",
+	"version": "1.2.53",
 	"description": "An Awesome Collection of Form Field components.",
 	"main": "index.js",
 	"module": "src/Input.js",
@@ -27,6 +27,7 @@
 		"react-dom": "*"
 	},
 	"dependencies": {
-		"react-icons": "^4.8.0"
+		"react-icons": "^4.8.0",
+		"@tailwindcss/forms": "^0.5.3"
 	}
 }

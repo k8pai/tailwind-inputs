@@ -9,6 +9,10 @@ const validateFields = (type, value) => {
 		}
 	}
 
+	if (type === 'textarea') {
+		return null;
+	}
+
 	if (type === 'noSpace') {
 		if (value === '') {
 			return null;
@@ -100,6 +104,7 @@ const validateFields = (type, value) => {
 	}
 	return value.length > 0 ? true : null;
 };
+
 const generatePlaceholder = (type) => {
 	if (type === 'default') {
 		return `Can't be empty!`;
@@ -122,8 +127,9 @@ const generatePlaceholder = (type) => {
 	}
 };
 
-const cleanupOptions = (options) => {
+const cleanupOptions = (options = []) => {
 	// This is a cleanup function to convert array to objects if these are array of objects, else to return a uniformalized array of objects
+
 	if (options.every((el) => typeof el === 'object')) {
 		return options.map((el, ind) => {
 			const { id, name, value, disable } = el;
@@ -141,14 +147,36 @@ const cleanupOptions = (options) => {
 			return { id: ind, name: el, value: el, disable: false };
 		});
 	}
+
 	return options;
 };
 
-function cleanupChoices(options, selected) {
+const cleanupChoices = (options = [], selected) => {
 	// cleaningup options such that options has no object with value = value
 	return options.filter(
 		(el) => !selected.some((item) => item.value === el.value),
 	);
-}
+};
 
-export { validateFields, generatePlaceholder, cleanupOptions, cleanupChoices };
+const cleanupCheckbox = (options = []) => {
+	return options.map((el, ind) => {
+		const { id, name, value, selected, label } = el;
+		if (!value || !label) {
+			console.error(
+				'value and label fields are Mandatory, keep it filled',
+			);
+		}
+		if (!id) el.id = ind;
+		if (!name && value) el.name = value;
+		if (!selected) el.selected = false;
+		return el;
+	});
+};
+
+export {
+	validateFields,
+	generatePlaceholder,
+	cleanupOptions,
+	cleanupChoices,
+	cleanupCheckbox,
+};

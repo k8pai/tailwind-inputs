@@ -1,84 +1,74 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { TiCheckboxContext, TiFormContext } from '../lib/Context';
+import { TiFormContext } from '../lib/Context';
+import { cleanupCheckbox } from '../lib/helpers';
 
-const TiCheckboxOption = ({ name, value, defaultState }) => {
-	const { setChecked } = useContext(TiCheckboxContext);
-	const [isChecked, setIsChecked] = useState(defaultState ?? false);
-
-	useEffect(() => {
-		return () => {
-			setChecked == '()=>{}'
-				? console.warn(
-						'Enclose <TiCheckbox.option {...props} /> within <TiCheckbox> tags to get selected options.',
-				  )
-				: null;
-		};
-	}, []);
-
-	useEffect(() => {
-		if (setChecked) {
-			isChecked ? setChecked((el) => [...el, value]) : null;
-			!isChecked
-				? setChecked((el) => el.filter((elem) => elem != value))
-				: null;
-		}
-	}, [isChecked]);
-
-	const handleChange = () => {
-		setIsChecked(!isChecked);
-	};
-	return (
-		<input
-			type="checkbox"
-			id={name}
-			value={value}
-			checked={isChecked}
-			onChange={handleChange}
-			className="mr-2 w-4 h-4 text-green-500 form-checkbox focus:ring-2 focus:ring-green-500"
-		/>
-	);
-};
-
-const TiLabel = ({ name, title, ...rest }) => {
-	return (
-		<label htmlFor={name} {...rest}>
-			{title}
-		</label>
-	);
-};
-
-TiCheckbox.option = TiCheckboxOption;
-TiCheckbox.Label = TiLabel;
-
-export default function TiCheckbox({ name, children, ...rest }) {
-	const [checked, setChecked] = useState([]);
-
+export default function TiCheckboxComponent({
+	name,
+	options,
+	className,
+	getSelected = () => {},
+	...rest
+}) {
 	const { setValues } = useContext(TiFormContext);
 
-	useEffect(() => {
-		return () =>
-			setValues == '()=>{}'
-				? console.warn(
-						`You need to enclose <TiCheckbox {...props} /> within <TiForm>, to access values of ${name} in your TiForm's submitHandler function.`,
-				  )
-				: null;
-	}, []);
+	const [checked, setChecked] = useState([]);
+	const [choices, setChoices] = useState(cleanupCheckbox(options));
+	const [theme, setTheme] = useState({
+		size: 'w-4 h-4',
+		bg: 'bg-green-500',
+		color: 'text-green-500',
+		label: '',
+		focus: 'focus:ring-transparent',
+		borderRadius: 'rounded-md',
+	});
 
 	useEffect(() => {
-		if (setValues) {
-			setValues((el) => ({ ...el, [name]: checked }));
-		}
+		getSelected(checked);
+		setValues((reference) => ({ ...reference, [name]: checked }));
 	}, [checked]);
+
+	useEffect(() => {
+		setChecked(choices.filter((el) => el.selected));
+	}, [choices]);
+
+	const handleChange = (event) => {
+		const { name, checked } = event.target;
+		setChoices((arr) =>
+			arr.map((el) =>
+				name === el.name ? { ...el, selected: checked } : el,
+			),
+		);
+	};
 	return (
-		<div className="flex items-center" {...rest}>
-			<TiCheckboxContext.Provider
-				value={{
-					checked,
-					setChecked,
-				}}
-			>
-				{children}
-			</TiCheckboxContext.Provider>
+		<div className={`flex m-1 space-x-4 ${className}`}>
+			{choices.map((el) => {
+				const { id, name, value, selected, label } = el;
+				return (
+					<div key={id} className={`flex items-start space-x-2`}>
+						<input
+							type="checkbox"
+							id={name}
+							name={name}
+							value={value}
+							checked={selected}
+							onChange={handleChange}
+							className={`my-1 ${theme.size} form-checkbox ${
+								theme.focus
+							} ${theme.color} ${selected ? theme.bg : ''} ${
+								theme.borderRadius
+							} `}
+						/>
+						{label && (
+							<label
+								className={`leading-snug ${theme.label}`}
+								htmlFor={name}
+							>
+								{label}
+							</label>
+						)}
+					</div>
+				);
+			})}
 		</div>
 	);
 }

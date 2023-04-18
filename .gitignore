@@ -7,7 +7,7 @@
 ## https://docs.npmjs.com/misc/faq#should-i-check-my-node_modules-folder-into-git
 node_modules
 /dist
-/ignore
+ignore
 /components
 /lib
 /index.js
