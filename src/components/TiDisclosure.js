@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { cleanupDisclosure } from '../lib/helpers';
 import { MdKeyboardArrowUp, MdKeyboardArrowDown } from 'react-icons/md';
 import { IconContext } from 'react-icons';
@@ -21,10 +21,6 @@ export default function TiDisclosure({
 		componentStyle: '',
 		...style,
 	});
-
-	// useEffect(() => {
-	// 	console.log(choices);
-	// }, [choices]);
 
 	const handleClick = (param) => {
 		const { id } = param;

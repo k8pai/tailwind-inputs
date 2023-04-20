@@ -4,7 +4,7 @@ import { HiChevronDown, HiChevronUp } from 'react-icons/hi2';
 import { TiFormContext } from '../lib/Context';
 import { validateFields } from '../lib/helpers';
 
-export default function TiNumberComponents({
+export default function TiNumber({
 	min = 0,
 	max = 100,
 	name,
@@ -45,6 +45,15 @@ export default function TiNumberComponents({
 		error: 'text-red-500 font-semibold tracking-wide',
 		...style,
 	});
+
+	useEffect(() => {
+		return () =>
+			setValues == '()=>{}'
+				? console.warn(
+						`You need to enclose <TiNumber {...props} /> within <TiForm>, to access values of ${name} in your TiForm's submitHandler function.`,
+				  )
+				: null;
+	}, []);
 
 	useEffect(() => {
 		if (valid === false) {

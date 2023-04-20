@@ -48,6 +48,15 @@ export default function TiText({
 	const [animate, setAnimate] = useState(false);
 
 	useEffect(() => {
+		return () =>
+			setValues == '()=>{}'
+				? console.warn(
+						`You need to enclose <TiText {...props} /> within <TiForm>, to access values of ${name} in your TiForm's submitHandler function.`,
+				  )
+				: null;
+	}, []);
+
+	useEffect(() => {
 		if (typeof validate !== 'undefined' && valid === null) {
 			setValid(false);
 		} else if (typeof validate === 'string' && valid === null) {

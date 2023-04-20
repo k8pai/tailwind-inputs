@@ -13,6 +13,15 @@ export const TiRange = ({
 	const { setValues } = useContext(TiFormContext);
 	const [value, setValue] = useState(defaultValue ?? (min + max) / 2);
 
+	useEffect(() => {
+		return () =>
+			setValues == '()=>{}'
+				? console.warn(
+						`You need to enclose <TiRange {...props} /> within <TiForm>, to access values of ${name} in your TiForm's submitHandler function.`,
+				  )
+				: null;
+	}, []);
+
 	const handleChange = (event) => {
 		const val = Number(event.target.value);
 		setValue(val);

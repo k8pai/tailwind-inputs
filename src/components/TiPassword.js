@@ -47,6 +47,15 @@ export default function TiPassword({
 	const [inpType, setInpType] = useState('password');
 
 	useEffect(() => {
+		return () =>
+			setValues == '()=>{}'
+				? console.warn(
+						`You need to enclose <TiPassword {...props} /> within <TiForm>, to access values of ${name} in your TiForm's submitHandler function.`,
+				  )
+				: null;
+	}, []);
+
+	useEffect(() => {
 		if (valid === false) {
 			setValues({ ...values, [name]: '' });
 		}

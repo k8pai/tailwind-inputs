@@ -19,7 +19,7 @@ export default function TiTextarea({
 	...rest
 }) {
 	const [value, setValue] = useState(defaultValue);
-	const { values, setValues } = useContext(TiFormContext);
+	const { setValues } = useContext(TiFormContext);
 	const [theme, setTheme] = useState({
 		size: 'max-w-full',
 		color: style.mode === 'dark' ? 'text-white' : 'text-black',
@@ -41,13 +41,16 @@ export default function TiTextarea({
 		...style,
 	});
 
-	const [animate, setAnimate] = useState(false);
+	useEffect(() => {
+		return () =>
+			setValues == '()=>{}'
+				? console.warn(
+						`You need to enclose <TiTextarea {...props} /> within <TiForm>, to access values of ${name} in your TiForm's submitHandler function.`,
+				  )
+				: null;
+	}, []);
 
 	useEffect(() => {
-		setAnimate(true);
-		setTimeout(() => {
-			setAnimate(false);
-		}, 300);
 		setValues((el) => ({ ...el, [name]: value }));
 	}, [value]);
 

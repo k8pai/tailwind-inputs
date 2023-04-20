@@ -50,6 +50,15 @@ export default function TiMultiSelect({
 	const componentRef = useRef(null);
 
 	useEffect(() => {
+		return () =>
+			setValues == '()=>{}'
+				? console.warn(
+						`You need to enclose <TiMultiSelect {...props} /> within <TiForm>, to access values of ${name} in your TiForm's submitHandler function.`,
+				  )
+				: null;
+	}, []);
+
+	useEffect(() => {
 		setValues((el) => ({ ...el, [name]: selected }));
 		setChoices(cleanupChoices(options, selected));
 	}, [selected]);

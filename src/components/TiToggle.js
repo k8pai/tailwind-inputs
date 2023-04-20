@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { TiFormContext } from '../lib/Context';
 
-export default function TiToggle({ style = {}, getState = () => {} }) {
+export default function TiToggle({ name, style = {}, getState = () => {} }) {
+	const { setValues } = useContext(TiFormContext);
 	const [isToggled, setIsToggle] = useState(false);
 	const [theme, setTheme] = useState({
 		bar: `w-14 h-8`,
@@ -14,6 +16,19 @@ export default function TiToggle({ style = {}, getState = () => {} }) {
 		...style,
 	});
 
+	useEffect(() => {
+		return () =>
+			setValues == '()=>{}'
+				? console.warn(
+						`You need to enclose <TiToggle {...props} /> within <TiForm>, to access values of ${name} in your TiForm's submitHandler function.`,
+				  )
+				: null;
+	}, []);
+
+	useEffect(() => {
+		setValues((el) => ({ ...el, [name]: isToggled }));
+	}, [isToggled]);
+
 	const toggle = () => {
 		getState(!isToggled);
 		setIsToggle(!isToggled);
@@ -25,6 +40,7 @@ export default function TiToggle({ style = {}, getState = () => {} }) {
 				className={`relative ${theme.bar} ${theme.shadow} ${theme.barBorder} ${theme.barBg}`}
 			>
 				<button
+					type="button"
 					className={`absolute transform transition-transform ${
 						theme.btn
 					} ${theme.btnBorder} ${theme.shadow} ${theme.btnBg} ${

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { TiFormContext } from '../lib/Context';
 import { cleanupCheckbox } from '../lib/helpers';
 
-export default function TiCheckboxComponent({
+export default function TiCheckbox({
 	name,
 	options,
 	className,
@@ -21,6 +21,15 @@ export default function TiCheckboxComponent({
 		focus: 'focus:ring-transparent',
 		borderRadius: 'rounded-md',
 	});
+
+	useEffect(() => {
+		return () =>
+			setValues == '()=>{}'
+				? console.warn(
+						`You need to enclose <TiCheckbox {...props} /> within <TiForm>, to access values of ${name} in your TiForm's submitHandler function.`,
+				  )
+				: null;
+	}, []);
 
 	useEffect(() => {
 		getSelected(checked);
