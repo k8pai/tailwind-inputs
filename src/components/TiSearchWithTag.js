@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { TiFormContext } from '../lib/Context';
 import { IconContext } from 'react-icons';
 import { MdClose } from 'react-icons/md';
+import { CiShoppingTag } from 'react-icons/ci';
 
 export default function TiSearchWithTag({
 	name,
@@ -9,6 +10,7 @@ export default function TiSearchWithTag({
 	style = {
 		mode: 'light',
 	},
+	fallback = 'No Tags Selected',
 	placeholder = 'Enter Tags Seperated By ,',
 	autoComplete = 'off',
 	getTags = () => {},
@@ -96,51 +98,65 @@ export default function TiSearchWithTag({
 				</form>
 			</div>
 			<div className="flex flex-wrap w-full mt-2">
-				{state.tags?.map((el, ind) => {
-					return (
-						<div
-							key={ind}
-							className={`rounded-md m-1 flex items-center ${theme.border} ${theme.bg}`}
-						>
-							<div
-								className={`py-1 ml-2 font-semibold tracking-wider inline-block align-middle`}
-							>
-								{el}
-							</div>
-							<button
-								className={`p-1 m-1`}
-								onClick={() => removeTag(el)}
-							>
-								<IconContext.Provider
-									value={{
-										size: '1em',
-										className: 'global-class-name',
-									}}
-								>
-									<MdClose />
-								</IconContext.Provider>
-							</button>
-						</div>
-					);
-				})}
+				{state.tags.length ? (
+					state.tags?.map((el, ind) => {
+						return (
+							<Tags
+								key={ind}
+								theme={theme}
+								el={el}
+								removeTag={removeTag}
+							/>
+						);
+					})
+				) : (
+					<TagsFallback fallback={fallback} />
+				)}
 			</div>
 		</div>
 	);
 }
 
-// const Tags = ({ theme, el, removeTag }) => {
-// 	return (
-// 		<div
-// 			className={`rounded-md m-1 flex items-center ${theme.border} ${theme.bg}`}
-// 		>
-// 			<div className={`py-1 ml-2`}>{el}</div>
-// 			<button className={`p-1 m-1`} onClick={removeTag}>
-// 				<IconContext.Provider
-// 					value={{ size: '1em', className: 'global-class-name' }}
-// 				>
-// 					<MdClose />
-// 				</IconContext.Provider>
-// 			</button>
-// 		</div>
-// 	);
-// };
+const Tags = ({ theme, el, removeTag }) => {
+	return (
+		<div
+			className={`rounded-md m-1 flex items-center ${theme.border} ${theme.bg}`}
+		>
+			<div
+				className={`py-1 ml-2 font-semibold tracking-wider inline-block align-middle`}
+			>
+				{el}
+			</div>
+			<button className={`p-1 m-1`} onClick={() => removeTag(el)}>
+				<IconContext.Provider
+					value={{
+						size: '1em',
+						className: 'global-class-name',
+					}}
+				>
+					<MdClose />
+				</IconContext.Provider>
+			</button>
+		</div>
+	);
+};
+
+const TagsFallback = ({ fallback }) => {
+	return (
+		<div className={`flex items-center space-x-2 mt-2`}>
+			<IconContext.Provider
+				value={{
+					size: '1.5em',
+					className: 'global-class-name',
+				}}
+			>
+				<CiShoppingTag />
+			</IconContext.Provider>
+			<div
+				className={`text-lg leading-none text-slate-700 font-semibold font-sans capitalize tracking-wider align-middle`}
+			>
+				{fallback}
+			</div>
+		</div>
+	);
+};
