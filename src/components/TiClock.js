@@ -83,7 +83,7 @@ export default function TiClock({ name }) {
 		});
 	};
 	return (
-		<div className="flex items-center justify-center w-full space-x-3 relative h-full">
+		<div className="flex items-center justify-center w-full h-full">
 			<div className="flex flex-col items-center w-fit p-2">
 				<button
 					className="w-8 h-8 transition-all bg-[#141414] rounded-md flex justify-center items-center"
@@ -104,8 +104,13 @@ export default function TiClock({ name }) {
 					value={state.hours}
 					onChange={handleChange}
 					onScroll={handleScroll}
-					className={`w-10 h-10`}
-					style={{ textAlign: 'center', fontSize: '1.5em' }}
+					className={`align-middle leading-3 text-white border-2 border-gray-400/80 rounded-xl outline-none selection:select-none bg-gray-700 hover:bg-green-600/80 transition-all px-3 py-3 font-bold`}
+					style={{
+						textAlign: 'center',
+						fontSize: '2em',
+						width: '75px',
+						caretColor: 'transparent',
+					}}
 				/>
 				<button
 					className="w-8 h-8 transition-all bg-gray-500 rounded-md flex justify-center items-center"
@@ -121,8 +126,14 @@ export default function TiClock({ name }) {
 					</IconContext.Provider>
 				</button>
 			</div>
-			<div className="flex items-center inset-y-0">
-				<span style={{ fontSize: '3em' }}>:</span>
+			<div className="flex items-center justify-center h-full text-6xl -translate-y-4 mx-4">
+				<span
+					style={{
+						fontSize: '2em',
+					}}
+				>
+					:
+				</span>
 			</div>
 			<div className="flex flex-col items-center w-fit p-2">
 				<button
@@ -144,8 +155,13 @@ export default function TiClock({ name }) {
 					value={state.minutes}
 					onChange={handleChange}
 					onScroll={handleScroll}
-					className={`w-10 h-10`}
-					style={{ textAlign: 'center', fontSize: '1.5em' }}
+					className={`align-middle leading-3 text-white border-2 border-gray-400/80 rounded-xl outline-none selection:select-none bg-gray-700 hover:bg-green-600/80 transition-all px-3 py-3 font-bold`}
+					style={{
+						textAlign: 'center',
+						fontSize: '2em',
+						width: '75px',
+						caretColor: 'transparent',
+					}}
 				/>
 				<button
 					className="w-8 h-8 transition-all bg-gray-500 rounded-md flex justify-center items-center"
