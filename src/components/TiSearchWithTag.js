@@ -52,12 +52,17 @@ export default function TiSearchWithTag({
 		event.preventDefault();
 		const { value, tags } = state;
 		const data = value.split(',');
-		const tagsArr = data.map((el) => el.trim());
-		getTags(state.tags);
+		const tagsArr = data.map((el, ind) => el.trim());
+
 		setState({
 			value: '',
-			tags: tags.length !== 0 ? [...tags, ...tagsArr] : tagsArr,
+			tags:
+				tags.length !== 0
+					? [...tags, ...tagsArr.filter((el) => !tags.includes(el))]
+					: tagsArr,
 		});
+
+		getTags(state.tags);
 	};
 
 	const hangleChange = (event) => {
