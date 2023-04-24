@@ -173,10 +173,20 @@ const cleanupCheckbox = (options = []) => {
 	});
 };
 
+const cleanupDisclosure = (options = []) => {
+	return options.map((el, ind) => {
+		const { id, title, content, isOpen } = el;
+		if (!id) el.id = ind;
+		if (typeof isOpen === 'undefined') el.isOpen = false;
+		return el;
+	});
+};
+
 export {
 	validateFields,
 	generatePlaceholder,
 	cleanupOptions,
 	cleanupChoices,
 	cleanupCheckbox,
+	cleanupDisclosure,
 };
