@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-export default function TiModal({
+export function TiModal({
 	heading = '',
 	content = '',
 	buttonText = 'Got it, thanks!',

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function TiFloatingLabel({
+export function TiFloatingLabel({
 	name = 'floatingLabel',
 	label = 'Floating Label',
 	style = { labelPosition: 'center' },

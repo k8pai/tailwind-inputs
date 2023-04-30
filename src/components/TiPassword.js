@@ -5,7 +5,7 @@ import { TiTick, TiTimes } from 'react-icons/ti';
 import { validateFields } from '../lib/helpers';
 import { TiFormContext } from '../lib/Context';
 
-export default function TiPassword({
+export function TiPassword({
 	name,
 	error,
 	label,

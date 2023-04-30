@@ -3,7 +3,7 @@ import { IconContext } from 'react-icons';
 import { BiCross, BiSearch } from 'react-icons/bi';
 import { MdOutlineClose } from 'react-icons/md';
 
-export default function TiSearch({
+export function TiSearch({
 	placeholder = 'Search',
 	onChange = () => {},
 	onSubmit = () => {},

@@ -5,7 +5,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { TiFormContext } from '../lib/Context';
 import { cleanupChoices, cleanupOptions } from '../lib/helpers';
 
-export default function TiMultiSelect({
+export function TiMultiSelect({
 	name,
 	label,
 	value,

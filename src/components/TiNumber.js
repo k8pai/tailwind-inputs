@@ -4,7 +4,7 @@ import { HiChevronDown, HiChevronUp } from 'react-icons/hi2';
 import { TiFormContext } from '../lib/Context';
 import { validateFields } from '../lib/helpers';
 
-export default function TiNumber({
+export function TiNumber({
 	min = 0,
 	max = 100,
 	name,

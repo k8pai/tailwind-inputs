@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { TiFormContext } from '../lib/Context';
 
-export default function TiToggle({ name, style = {}, getState = () => {} }) {
+export function TiToggle({ name, style = {}, getState = () => {} }) {
 	const { setValues } = useContext(TiFormContext);
 	const [isToggled, setIsToggle] = useState(false);
 	const [theme, setTheme] = useState({

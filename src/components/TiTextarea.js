@@ -1,7 +1,7 @@
 import { TiFormContext } from '../lib/Context';
 import React, { useContext, useEffect, useState } from 'react';
 
-export default function TiTextarea({
+export function TiTextarea({
 	rows = 5,
 	name,
 	label,

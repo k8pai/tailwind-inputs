@@ -4,7 +4,7 @@ import { validateFields } from '../lib/helpers';
 import { TiTick, TiTimes } from 'react-icons/ti';
 import React, { useContext, useEffect, useState } from 'react';
 
-export default function TiText({
+export function TiText({
 	name,
 	error,
 	label,

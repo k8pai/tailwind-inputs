@@ -1,7 +1,7 @@
 import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { TiFileContext, TiFormContext } from '../lib/Context';
 
-export default function TiFiles({
+export function TiFiles({
 	name,
 	title,
 	label = 'Choose a File',

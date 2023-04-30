@@ -1,23 +1,47 @@
 // index.js
-export { TiButton } from './components/TiButton';
-export { TiForm } from './components/TiForm';
-export { TiLabel } from './components/TiLabel';
-export { TiRadio } from './components/TiRadio';
-export { TiRange } from './components/TiRange';
+import { TiButton } from './components/TiButton';
+import { TiLabel } from './components/TiLabel';
+import { TiForm } from './components/TiForm';
+import { TiRadio } from './components/TiRadio';
+import { TiRange } from './components/TiRange';
+import { TiCheckbox } from './components/TiCheckbox';
+import { TiCombobox } from './components/TiCombobox';
+import { TiDisclosure } from './components/TiDisclosure';
 
-export { default as TiCheckbox } from './components/TiCheckbox';
-export { default as TiCombobox } from './components/TiCombobox';
-export { default as TiDisclosure } from './components/TiDisclosure';
-export { default as TiFiles } from './components/TiFiles';
-export { default as TiFloatingLabel } from './components/TiFloatingLabel';
-export { default as TiMail } from './components/TiMail';
-export { default as TiModal } from './components/TiModal';
-export { default as TiMultiselect } from './components/TiMultiSelect';
-export { default as TiNumber } from './components/TiNumber';
-export { default as TiPassword } from './components/TiPassword';
-export { default as TiSearch } from './components/TiSearch';
-export { default as TiSearchWithTag } from './components/TiSearchWithTag';
-export { default as TiSelect } from './components/TiSelect';
-export { default as TiText } from './components/TiText';
-export { default as TiTextarea } from './components/TiTextarea';
-export { default as TiToggle } from './components/TiToggle';
+import { TiFiles } from './components/TiFiles';
+import { TiFloatingLabel } from './components/TiFloatingLabel';
+import { TiMail } from './components/TiMail';
+import { TiModal } from './components/TiModal';
+import { TiMultiSelect } from './components/TiMultiSelect';
+import { TiNumber } from './components/TiNumber';
+import { TiPassword } from './components/TiPassword';
+import { TiSearch } from './components/TiSearch';
+import { TiSearchWithTag } from './components/TiSearchWithTag';
+import { TiSelect } from './components/TiSelect';
+import { TiText } from './components/TiText';
+import { TiTextarea } from './components/TiTextarea';
+import { TiToggle } from './components/TiToggle';
+
+export {
+	TiButton,
+	TiLabel,
+	TiForm,
+	TiRadio,
+	TiRange,
+	TiCheckbox,
+	TiCombobox,
+	TiDisclosure,
+	TiFiles,
+	TiFloatingLabel,
+	TiMail,
+	TiModal,
+	TiMultiSelect,
+	TiNumber,
+	TiPassword,
+	TiSearch,
+	TiSearchWithTag,
+	TiSelect,
+	TiText,
+	TiTextarea,
+	TiToggle,
+};

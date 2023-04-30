@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { TiFormContext } from '../lib/Context';
 import { cleanupOptions } from '../lib/helpers';
 
-export default function TiSelect({
+export function TiSelect({
 	name,
 	value,
 	indicator = true,

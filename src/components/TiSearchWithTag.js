@@ -4,7 +4,7 @@ import { IconContext } from 'react-icons';
 import { MdClose } from 'react-icons/md';
 import { CiShoppingTag } from 'react-icons/ci';
 
-export default function TiSearchWithTag({
+export function TiSearchWithTag({
 	name,
 	label = 'Categories',
 	style = {

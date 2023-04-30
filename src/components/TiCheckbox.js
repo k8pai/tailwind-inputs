@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { TiFormContext } from '../lib/Context';
 import { cleanupCheckbox } from '../lib/helpers';
 
-export default function TiCheckbox({
+export function TiCheckbox({
 	name,
 	options,
 	className,
