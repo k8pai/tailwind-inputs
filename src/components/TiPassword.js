@@ -206,6 +206,15 @@ export function TiPassword({
 					</div>
 				</div>
 			</div>
+
+			{error && (
+				<h1
+					aria-hidden={error && valid === false}
+					className={`${theme.error} mt-1 ml-1 transition-all ease-in-out duration-300 opacity-0 invisible aria-hidden:visible aria-hidden:opacity-100`}
+				>
+					{error}
+				</h1>
+			)}
 		</div>
 	);
 }

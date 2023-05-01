@@ -1,11 +1,12 @@
 {
 	"name": "@k8pai/tailwind-inputs",
-	"version": "1.2.54",
+	"version": "1.2.58",
 	"description": "An Awesome Collection of Form Field components.",
 	"exports": {
 		".": "./index.js"
 	},
-	"module": "src/index.js",
+	"type": "commonjs",
+	"module": "./index.js",
 	"scripts": {
 		"build": "babel src --out-dir . --copy-files",
 		"test": "echo \"Error: no test specified\" && exit 1"
@@ -14,6 +15,7 @@
 	"files": [
 		"components",
 		"lib",
+		"index.js",
 		"tailwind.config.js"
 	],
 	"license": "MIT",
