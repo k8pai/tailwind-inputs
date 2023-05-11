@@ -13,7 +13,6 @@ export function TiSelect({
 	style = {
 		mode: 'light',
 	},
-	children,
 	...rest
 }) {
 	const { setValues } = useContext(TiFormContext);
