@@ -4,7 +4,7 @@ import { IconContext } from 'react-icons';
 import { MdClose } from 'react-icons/md';
 import { CiShoppingTag } from 'react-icons/ci';
 
-export function TiSearchWithTag({
+export default function TiSearchWithTag({
 	name,
 	label = 'Categories',
 	style = {
@@ -67,7 +67,7 @@ export function TiSearchWithTag({
 		getTags(state.tags);
 	};
 
-	const hangleChange = (event) => {
+	const handleChange = (event) => {
 		const { value } = event.target;
 		setState({ ...state, value: value });
 	};
@@ -83,19 +83,23 @@ export function TiSearchWithTag({
 				</label>
 			)}
 			<div className={`relative mt-2 bg-transparent ${theme.color}`}>
-				<form onSubmit={handleSubmit}>
-					<input
-						id={name}
-						name={name}
-						value={state.value}
-						autoComplete={autoComplete}
-						onChange={hangleChange}
-						placeholder={placeholder}
-						className={`transition duration-75 w-full leading-tight outline-none focus:shadow-outline border-2 ${
-							theme.padding ?? 'px-4 py-3 '
-						} ${theme.input} ${theme.bg} ${theme.default}`}
-					/>
-				</form>
+				<input
+					id={name}
+					name={name}
+					value={state.value}
+					autoComplete={autoComplete}
+					onChange={handleChange}
+					placeholder={placeholder}
+					className={`transition duration-75 w-full leading-tight outline-none focus:shadow-outline border-2 ${
+						theme.padding ?? 'px-4 py-3 '
+					} ${theme.input} ${theme.bg} ${theme.default}`}
+				/>
+				<div
+					className="absolute inset-y-0 right-0 px-4 py-3 "
+					onClick={handleSubmit}
+				>
+					<button>add</button>
+				</div>
 			</div>
 			<div className="flex flex-wrap w-full mt-2">
 				{state.tags.length ? (
@@ -153,7 +157,7 @@ const TagsFallback = ({ fallback }) => {
 				<CiShoppingTag />
 			</IconContext.Provider>
 			<div
-				className={`text-lg leading-none text-slate-700 font-semibold font-sans capitalize tracking-wider align-middle`}
+				className={`text-lg leading-none text-gray-900 font-semibold font-sans capitalize tracking-wider align-middle`}
 			>
 				{fallback}
 			</div>
