@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { TiFormContext } from '../lib/Context';
 import { IconContext } from 'react-icons';
-import { MdClose } from 'react-icons/md';
+import { MdAdd, MdClose } from 'react-icons/md';
 import { CiShoppingTag } from 'react-icons/ci';
 
 export default function TiSearchWithTag({
@@ -10,9 +10,14 @@ export default function TiSearchWithTag({
 	style = {
 		mode: 'light',
 	},
+	infoNote = 'Space are not allowed for tags, try snake casing.',
+	splitter = ' ',
 	fallback = 'No Tags Selected',
-	placeholder = 'Enter Tags Seperated By ,',
+	buttonText = '',
+	placeholder = 'Tags realted to Categories',
 	autoComplete = 'off',
+	buttonComponent: Button = MdAdd,
+	fallbackComponent = CiShoppingTag,
 	getTags = () => {},
 	...rest
 }) {
@@ -33,7 +38,7 @@ export default function TiSearchWithTag({
 				: 'text-gray-300 bg-slate-50',
 
 		label: 'font-semibold tracking-wide ml-2',
-		input: 'font-semibold tracking-wider text-lg rounded-lg',
+		input: 'font-semibold tracking-wider text-md rounded-lg',
 		default: 'border-gray-500',
 		valid: 'border-green-400',
 		invalid: 'border-red-400',
@@ -50,10 +55,9 @@ export default function TiSearchWithTag({
 		setState({ ...state, tags: data });
 	};
 
-	const handleSubmit = (event) => {
-		event.preventDefault();
+	const setTag = () => {
 		const { value, tags } = state;
-		const data = value.split(',');
+		const data = value.split(splitter);
 		const tagsArr = data.map((el, ind) => el.trim());
 
 		setState({
@@ -69,7 +73,11 @@ export default function TiSearchWithTag({
 
 	const handleChange = (event) => {
 		const { value } = event.target;
-		setState({ ...state, value: value });
+		if (value.includes(' ')) {
+			setTag();
+		} else {
+			setState({ ...state, value: value });
+		}
 	};
 
 	return (
@@ -82,7 +90,9 @@ export default function TiSearchWithTag({
 					{label}
 				</label>
 			)}
-			<div className={`relative mt-2 bg-transparent ${theme.color}`}>
+			<div
+				className={`relative mt-2 bg-transparent overflow-hidden ${theme.color}`}
+			>
 				<input
 					id={name}
 					name={name}
@@ -91,17 +101,40 @@ export default function TiSearchWithTag({
 					onChange={handleChange}
 					placeholder={placeholder}
 					className={`transition duration-75 w-full leading-tight outline-none focus:shadow-outline border-2 ${
-						theme.padding ?? 'px-4 py-3 '
+						theme.padding ?? 'pl-3 pr-9 py-2 '
 					} ${theme.input} ${theme.bg} ${theme.default}`}
 				/>
-				<div
-					className="absolute inset-y-0 right-0 px-4 py-3 "
-					onClick={handleSubmit}
-				>
-					<button>add</button>
-				</div>
+				{buttonText && (
+					<button
+						className="absolute inset-y-0 right-0 px-3 py-2 "
+						onClick={setTag}
+					>
+						{buttonText}
+					</button>
+				)}
+				{Button && (
+					<button
+						className="absolute inset-y-0 right-2 my-2 rounded-md"
+						onClick={setTag}
+					>
+						<IconContext.Provider
+							value={{
+								size: '1.3em',
+								className: 'global-class-name',
+							}}
+						>
+							<Button />
+						</IconContext.Provider>
+					</button>
+				)}
 			</div>
-			<div className="flex flex-wrap w-full mt-2">
+
+			{infoNote && (
+				<div className={`text-sm font-semibold tracking-wide m-px`}>
+					{infoNote}
+				</div>
+			)}
+			<div className="flex flex-wrap w-full mt-1">
 				{state.tags.length ? (
 					state.tags?.map((el, ind) => {
 						return (
@@ -113,9 +146,12 @@ export default function TiSearchWithTag({
 							/>
 						);
 					})
-				) : (
-					<TagsFallback fallback={fallback} />
-				)}
+				) : fallback ? (
+					<TagsFallback
+						fallback={fallback}
+						Component={fallbackComponent}
+					/>
+				) : null}
 			</div>
 		</div>
 	);
@@ -145,7 +181,7 @@ const Tags = ({ theme, el, removeTag }) => {
 	);
 };
 
-const TagsFallback = ({ fallback }) => {
+const TagsFallback = ({ Component, fallback }) => {
 	return (
 		<div className={`flex items-center space-x-2 mt-2`}>
 			<IconContext.Provider
@@ -154,7 +190,7 @@ const TagsFallback = ({ fallback }) => {
 					className: 'global-class-name',
 				}}
 			>
-				<CiShoppingTag />
+				<Component />
 			</IconContext.Provider>
 			<div
 				className={`text-lg leading-none text-gray-900 font-semibold font-sans capitalize tracking-wider align-middle`}
