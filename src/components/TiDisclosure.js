@@ -4,7 +4,7 @@ import { MdKeyboardArrowUp, MdKeyboardArrowDown } from 'react-icons/md';
 import { IconContext } from 'react-icons';
 import { motion } from 'framer-motion';
 
-export default function TiDisclosure({
+export function TiDisclosure({
 	name,
 	options,
 	Component = MdKeyboardArrowDown,
